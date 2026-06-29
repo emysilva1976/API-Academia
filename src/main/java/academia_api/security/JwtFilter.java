@@ -23,11 +23,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.startsWith("/auth")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
+        if (
+    path.startsWith("/auth") ||
+    path.equals("/hello") ||
+    path.startsWith("/swagger-ui") ||
+    path.startsWith("/v3/api-docs")
+) {
+    filterChain.doFilter(request, response);
+    return;
+}
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
